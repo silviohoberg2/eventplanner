@@ -1,3 +1,9 @@
-const root = document.querySelector('#root');
+import {createRoot} from 'react-dom/client';
+import App from './components/App';
 
-root.textContent = 'React startet gleich...';
+const rootElement = document.querySelector('#root');
+const root = createRoot(rootElement);
+
+root.render(
+    <App />
+);
