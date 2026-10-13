@@ -24,13 +24,15 @@ main {
   padding-block: 2rem;
 }
 
-.course-list {
+.course-list,
+.event-list {
   display: grid;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
 .course-card,
+.event-card,
 .info-box,
 .panel,
 .notice {
