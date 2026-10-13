@@ -1,6 +1,6 @@
 function Notice({ type, children }) {
   return (
-    <div className="notice">   
+    <div className={`notice notice-${type}`}>   
       {children}
     </div>
   );

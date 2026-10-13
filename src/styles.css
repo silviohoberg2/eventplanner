@@ -47,7 +47,14 @@ main {
 
  .notice {
     border: 1px solid #999;
+    border-left: 4px solid transparent;
     margin-bottom: 1.5rem;
+ }
+ .notice-info {
+    border-left-color: steelblue;
+ }
+ .notice-warning {
+    border-left-color: darkorange;
  }
 
  .course-card {

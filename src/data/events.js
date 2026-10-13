@@ -7,7 +7,8 @@ const events = [
         eventType: 'Workshop',
         seats: 12,
         online: false,
-        featured: true
+        featured: true,
+        registrationOpen: true
     },
     {
     id: 2,
@@ -17,7 +18,8 @@ const events = [
     eventType: "Webinar",
     seats: 20,
     online: true,
-    featured: true
+    featured: true,
+    registrationOpen: true
   },
   {
     id: 3,
@@ -27,17 +29,19 @@ const events = [
     eventType: "Meetup",
     seats: 0,
     online: false,
-    featured: false
+    featured: false,
+    registrationOpen: false
   },
   {
     id: 4,
-    title: "Work Around",
-    date: "2026-10-30",
-    location: "Buxtehude",
-    eventType: "Around",
+    title: "CSS Layout Lab",
+    date: "2026-10-15",
+    location: "Nordhausen",
+    eventType: "Workshop",
     seats: 15,
     online: false,
-    featured: true
+    featured: true,
+    registrationOpen: false
   }
 ];
 
