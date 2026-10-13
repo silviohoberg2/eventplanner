@@ -1,6 +1,6 @@
 export default function CourseCard({title, description, duration, online, level, featured}) {
     return (
-        <article>
+        <article className="course-card">
             <h3>{title}</h3>
             <p>{description}</p>
             <p> Dauer: {duration} UE</p>

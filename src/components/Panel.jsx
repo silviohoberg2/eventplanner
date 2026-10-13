@@ -1,0 +1,10 @@
+function Panel({ title, children }) {
+  return (
+    <section className="panel">
+      <h2>{title}</h2>
+      <div>{children}</div>
+    </section>
+  );
+}
+
+export default Panel;

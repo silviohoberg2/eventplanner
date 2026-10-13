@@ -2,7 +2,7 @@ import CourseCard from "./CourseCard";
 
 export default function CourseList() {
     return (
-        <section>
+        <section className="course-list">
             <h2>Kurse</h2>
                 <CourseCard
                     title="React Grundlagen"

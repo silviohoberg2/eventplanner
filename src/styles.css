@@ -1,0 +1,53 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #222;
+  background: #f5f5f5;
+}
+
+header,
+main,
+footer {
+  width: min(1100px, 90%);
+  margin-inline: auto;
+}
+
+header {
+  padding-block: 2rem;
+}
+
+main {
+  padding-block: 2rem;
+}
+
+.course-list {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.course-card,
+.info-box,
+.panel,
+.notice {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: white;
+}
+.info-box {
+     border: 1px solid #ccc;
+     border-left: 4px solid #555;
+ }
+
+ .notice {
+    border: 1px solid #999;
+    margin-bottom: 1.5rem;
+ }
+
+ .course-card {
+    border: 1px solid #ddd;
+ }
