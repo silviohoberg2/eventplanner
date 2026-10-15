@@ -1,12 +1,36 @@
 import { useState } from "react";
 
 function BookingForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [participants, setParticipants] = useState(1);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    participants: 1
+  });
+
   const [error, setError] = useState("");
   const [successBooking, setSuccessBooking] = useState(null);
-  const [phone, setPhone] = useState("");
+
+  /*
+   * Mit diesem Eventhandler ersetzen wir die Arrow-Funktionen
+   * an den einzelnen Formularfeldern.
+   */
+  function handleChange(event) {
+    const {
+      name,
+      value
+    } = event.target;
+
+    const newValue =
+      name === "participants"
+        ? Number(value)
+        : value;
+
+    setFormData({
+      ...formData,
+      [name]: newValue
+    });
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -14,29 +38,32 @@ function BookingForm() {
     setError("");
     setSuccessBooking(null);
 
-    if (name.trim() === "") {
+    if (formData.name.trim() === "") {
       setError("Bitte geben Sie einen Namen ein!");
       return;
     }
 
-    if (email.trim() === "") {
+    if (formData.email.trim() === "") {
       setError("Bitte geben Sie eine E-Mail-Adresse ein!");
       return;
     }
 
-    if (!email.includes("@")) {
+    if (!formData.email.includes("@")) {
       setError("Bitte geben Sie eine gültige E-Mail-Adresse ein!");
       return;
     }
 
-    if (phone.trim() !== "" && phone.trim().length < 5) {
+    if (
+      formData.phone.trim() !== "" &&
+      formData.phone.trim().length < 5
+    ) {
       setError(
         "Die Telefonnummer muss mindestens fünf Zeichen besitzen!"
       );
       return;
     }
 
-    if (participants < 1) {
+    if (formData.participants < 1) {
       setError(
         "Es muss mindestens eine Person angemeldet werden!"
       );
@@ -44,21 +71,18 @@ function BookingForm() {
     }
 
     setSuccessBooking({
-      name,
-      participants
+      name: formData.name,
+      participants: formData.participants
     });
 
-    console.log({
-      name,
-      email,
-      phone,
-      participants
-    });
+    console.log(formData);
 
-    setName("");
-    setEmail("");
-    setPhone("");
-    setParticipants(1);
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      participants: 1
+    });
   }
 
   return (
@@ -80,7 +104,6 @@ function BookingForm() {
       )}
 
       <form onSubmit={handleSubmit} noValidate>
-
         <div>
           <label htmlFor="name">
             Name*
@@ -90,11 +113,8 @@ function BookingForm() {
             type="text"
             name="name"
             id="name"
-            value={name}
-            required
-            onChange={(event) =>
-              setName(event.target.value)
-            }
+            value={formData.name}
+            onChange={handleChange}
           />
         </div>
 
@@ -107,11 +127,8 @@ function BookingForm() {
             type="email"
             name="email"
             id="email"
-            value={email}
-            required
-            onChange={(event) =>
-              setEmail(event.target.value)
-            }
+            value={formData.email}
+            onChange={handleChange}
           />
         </div>
 
@@ -124,10 +141,8 @@ function BookingForm() {
             type="tel"
             name="phone"
             id="phone"
-            value={phone}
-            onChange={(event) =>
-              setPhone(event.target.value)
-            }
+            value={formData.phone}
+            onChange={handleChange}
           />
         </div>
 
@@ -141,18 +156,14 @@ function BookingForm() {
             name="participants"
             id="participants"
             min="1"
-            value={participants}
-            required
-            onChange={(event) =>
-              setParticipants(Number(event.target.value))
-            }
+            value={formData.participants}
+            onChange={handleChange}
           />
         </div>
 
         <button type="submit">
           Buchen
         </button>
-
       </form>
     </section>
   );
