@@ -1,22 +1,43 @@
 import { useState } from "react";
+import events from "../data/events.js";
+import RegistrationForm from "./RegistrationForm.jsx";
+import RegistrationList from "./RegistrationList.jsx";
 
 function RegistrationManager() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    participants: 1
+    participants: 1,
+    eventId: ""
   });
 
   const [registrations, setRegistrations] = useState([]);
   const [error, setError] = useState("");
 
+  const participantsCount = registrations.reduce(
+    (total, registration) =>
+      total + registration.participants,
+    0
+  );
+
   function handleChange(event) {
     const { name, value } = event.target;
 
-    const newValue =
-      name === "participants"
-        ? Number(value)
-        : value;
+    let newValue = value;
+
+    if (name === "participants") {
+      newValue =
+        value === ""
+          ? ""
+          : Number(value);
+    }
+
+    if (name === "eventId") {
+      newValue =
+        value === ""
+          ? ""
+          : Number(value);
+    }
 
     setFormData({
       ...formData,
@@ -30,22 +51,32 @@ function RegistrationManager() {
     setError("");
 
     if (formData.name.trim() === "") {
-      setError("Bitte geben Sie Ihren Namen ein!");
+      setError("Bitte geben Sie einen Namen ein!");
       return;
     }
 
     if (formData.email.trim() === "") {
-      setError("Bitte geben Sie eine E-Mail-Adresse an!");
+      setError("Bitte geben Sie eine E-Mail-Adresse ein!");
       return;
     }
 
     if (!formData.email.includes("@")) {
-      setError("Bitte geben Sie eine gültige E-Mail-Adresse an!");
+      setError("Bitte geben Sie eine gültige E-Mail-Adresse ein!");
       return;
     }
 
-    if (formData.participants < 1) {
-      setError("Es muss mindestens eine Person angemeldet werden!");
+    if (formData.eventId === "") {
+      setError("Bitte wählen Sie eine Veranstaltung aus!");
+      return;
+    }
+
+    if (
+      formData.participants === "" ||
+      formData.participants < 1
+    ) {
+      setError(
+        "Es muss mindestens eine Person angemeldet werden!"
+      );
       return;
     }
 
@@ -53,7 +84,8 @@ function RegistrationManager() {
       id: Date.now(),
       name: formData.name,
       email: formData.email,
-      participants: formData.participants
+      participants: formData.participants,
+      eventId: formData.eventId
     };
 
     setRegistrations([
@@ -64,104 +96,40 @@ function RegistrationManager() {
     setFormData({
       name: "",
       email: "",
-      participants: 1
+      participants: 1,
+      eventId: ""
     });
   }
 
-  let totalParticipants = 0;
-
-  registrations.forEach((registration) => {
-    totalParticipants += registration.participants;
-  });
+  function handleDeleteRegistration(id) {
+    setRegistrations(
+      registrations.filter(
+        (registration) =>
+          registration.id !== id
+      )
+    );
+  }
 
   return (
     <section>
       <h2>Anmeldungen</h2>
 
-      {error && (
-        <p className="form-error">
-          {error}
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">
-            Name*
-          </label>
-
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email">
-            E-Mail*
-          </label>
-
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
-          <label htmlFor="participants">
-            Teilnehmer*
-          </label>
-
-          <input
-            type="number"
-            id="participants"
-            name="participants"
-            min="1"
-            value={formData.participants}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button type="submit">
-          Anmeldung
-        </button>
-      </form>
+      <RegistrationForm
+        formData={formData}
+        error={error}
+        events={events}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+      />
 
       <h3>Aktuelle Anmeldungen</h3>
 
-      <p>
-        Registrierungen:{" "}
-        {registrations.length === 0
-          ? "Noch keine Anmeldungen vorhanden."
-          : registrations.length}
-      </p>
-
-      <p>
-        Angemeldete Personen: {totalParticipants}
-      </p>
-
-      {registrations.map((registration) => (
-        <article
-          key={registration.id}
-          className="registration-card"
-        >
-          <h4>{registration.name}</h4>
-
-          <p>
-            {registration.email}
-          </p>
-
-          <p>
-            Teilnehmer: {registration.participants}
-          </p>
-        </article>
-      ))}
+      <RegistrationList
+        registrations={registrations}
+        participantsCount={participantsCount}
+        events={events}
+        onDelete={handleDeleteRegistration}
+      />
     </section>
   );
 }
