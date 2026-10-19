@@ -8,16 +8,10 @@ function RegistrationForm({
   return (
     <form onSubmit={onSubmit} noValidate>
       {error && (
-        <p className="form-error">
-          {error}
-        </p>
+        <p className="alert form-error">{error}</p>
       )}
-
       <div>
-        <label htmlFor="name">
-          Name*
-        </label>
-
+        <label htmlFor="name">Name*</label>
         <input
           type="text"
           id="name"
@@ -28,10 +22,7 @@ function RegistrationForm({
       </div>
 
       <div>
-        <label htmlFor="email">
-          E-Mail*
-        </label>
-
+        <label htmlFor="email">E-Mail*</label>
         <input
           type="email"
           id="email"
@@ -42,56 +33,36 @@ function RegistrationForm({
       </div>
 
       <div>
-        <label htmlFor="eventId">
-          Veranstaltung*
-        </label>
-
+        <label htmlFor="eventId">Veranstaltung*</label>
         <select
           id="eventId"
           name="eventId"
           value={formData.eventId}
           onChange={onChange}
         >
-          <option value="">
-            Bitte auswählen!
-          </option>
+          <option value="">Bitte auswählen!</option>
 
-          {events.map((event) => {
-            const soldOut = event.seats === 0;
-
-            const registrationClosed =
-              event.registrationOpen === false;
-
-            const unavailable =
-              soldOut || registrationClosed;
-
-            let status = "";
-
-            if (soldOut) {
-              status = " - Ausgebucht";
-            } else if (registrationClosed) {
-              status = " - Anmeldung geschlossen";
-            }
-
-            return (
-              <option
-                key={event.id}
-                value={event.id}
-                disabled={unavailable}
-              >
-                {event.title}
-                {status}
-              </option>
-            );
-          })}
+          {events.map((event) => (
+            <option
+              key={event.id}
+              value={event.id}
+              disabled={
+                event.seats === 0 || !event.registrationOpen
+              }
+            >
+              {event.title}
+              {event.seats === 0
+                ? " - ausgebucht"
+                : !event.registrationOpen
+                  ? " - Anmeldung geschlossen"
+                  : ""}
+            </option>
+          ))}
         </select>
       </div>
 
       <div>
-        <label htmlFor="participants">
-          Teilnehmer*
-        </label>
-
+        <label htmlFor="participants">Teilnehmer*</label>
         <input
           type="number"
           id="participants"
@@ -102,9 +73,8 @@ function RegistrationForm({
         />
       </div>
 
-      <button type="submit">
-        Anmelden
-      </button>
+      <button type="submit">Anmelden</button>
+
     </form>
   );
 }

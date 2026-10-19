@@ -1,35 +1,41 @@
 import { useState } from "react";
-import events from "../data/events.js";
-import RegistrationForm from "./RegistrationForm.jsx";
-import RegistrationList from "./RegistrationList.jsx";
 
-function RegistrationManager() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    participants: 1,
-    eventId: ""
-  });
+import events from "../data/events";
+import RegistrationForm from "./RegistrationForm";
+import RegistrationList from "./RegistrationList";
 
-  const [registrations, setRegistrations] = useState([]);
+function RegistrationManager({
+  registrations,
+  setRegistrations
+}) {
+  const [formData, setFormData] =
+    useState({
+      name: "",
+      email: "",
+      participants: 1,
+      eventId: ""
+    });
+
   const [error, setError] = useState("");
 
-  const participantsCount = registrations.reduce(
-    (total, registration) =>
-      total + registration.participants,
-    0
-  );
+  const participantsCount =
+    registrations.reduce(
+      (sum, registration) => sum + registration.participants, 0
+    );
 
   function handleChange(event) {
     const { name, value } = event.target;
 
+    const eventRegistrations =
+      registrations.filter(
+        (registration) =>
+          registration.eventId === event.id
+      );
+
     let newValue = value;
 
     if (name === "participants") {
-      newValue =
-        value === ""
-          ? ""
-          : Number(value);
+      newValue = Number(value);
     }
 
     if (name === "eventId") {
@@ -51,33 +57,17 @@ function RegistrationManager() {
     setError("");
 
     if (formData.name.trim() === "") {
-      setError("Bitte geben Sie einen Namen ein!");
+      setError("Bitte geben Sie Ihren Namen ein!");
       return;
     }
 
     if (formData.email.trim() === "") {
-      setError("Bitte geben Sie eine E-Mail-Adresse ein!");
-      return;
-    }
-
-    if (!formData.email.includes("@")) {
-      setError("Bitte geben Sie eine gültige E-Mail-Adresse ein!");
+      setError("Bitte geben Sie eine E-Mail-Adresse an!");
       return;
     }
 
     if (formData.eventId === "") {
       setError("Bitte wählen Sie eine Veranstaltung aus!");
-      return;
-    }
-
-    if (
-      formData.participants === "" ||
-      formData.participants < 1
-    ) {
-      setError(
-        "Es muss mindestens eine Person angemeldet werden!"
-      );
-      return;
     }
 
     const newRegistration = {
@@ -86,7 +76,7 @@ function RegistrationManager() {
       email: formData.email,
       participants: formData.participants,
       eventId: formData.eventId
-    };
+    }
 
     setRegistrations([
       ...registrations,
@@ -102,10 +92,14 @@ function RegistrationManager() {
   }
 
   function handleDeleteRegistration(id) {
+    const confirmed =
+      window.confirm("Registrierung wirklich löschen?");
+
+    if (!confirmed) return;
+
     setRegistrations(
       registrations.filter(
-        (registration) =>
-          registration.id !== id
+        (registration) => registration.id !== id
       )
     );
   }
@@ -129,7 +123,9 @@ function RegistrationManager() {
         participantsCount={participantsCount}
         events={events}
         onDelete={handleDeleteRegistration}
+        onDeleteAll={setRegistrations}
       />
+
     </section>
   );
 }
