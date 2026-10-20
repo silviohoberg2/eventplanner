@@ -3,14 +3,16 @@ function RegistrationForm({
   error,
   events,
   onChange,
-  onSubmit
+  onSubmit,
+  nameInputRef
 }) {
   return (
     <form onSubmit={onSubmit} noValidate>
-      
+
       <div>
         <label htmlFor="name">Name*</label>
         <input
+          ref={nameInputRef}
           type="text"
           id="name"
           name="name"
@@ -18,8 +20,8 @@ function RegistrationForm({
           onChange={onChange}
         />
         {error?.field === "name" && (
-        <p className="alert form-error">{error.message}</p>
-      )}
+          <p className="alert form-error">{error.message}</p>
+        )}
       </div>
 
       <div>
@@ -32,8 +34,8 @@ function RegistrationForm({
           onChange={onChange}
         />
         {error?.field === "email" && (
-        <p className="alert form-error">{error.message}</p>
-      )}
+          <p className="alert form-error">{error.message}</p>
+        )}
       </div>
 
       <div>
@@ -63,9 +65,9 @@ function RegistrationForm({
             </option>
           ))}
         </select>
-      {error?.field === "eventId" && (
-        <p className="alert form-error">{error.message}</p>
-      )}
+        {error?.field === "eventId" && (
+          <p className="alert form-error">{error.message}</p>
+        )}
       </div>
 
       <div>
@@ -79,8 +81,8 @@ function RegistrationForm({
           onChange={onChange}
         />
         {error?.field === "participants" && (
-        <p className="alert form-error">{error.message}</p>
-      )}
+          <p className="alert form-error">{error.message}</p>
+        )}
       </div>
 
       <button type="submit">Anmelden</button>
