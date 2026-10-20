@@ -7,9 +7,7 @@ function RegistrationForm({
 }) {
   return (
     <form onSubmit={onSubmit} noValidate>
-      {error && (
-        <p className="alert form-error">{error}</p>
-      )}
+      
       <div>
         <label htmlFor="name">Name*</label>
         <input
@@ -19,6 +17,9 @@ function RegistrationForm({
           value={formData.name}
           onChange={onChange}
         />
+        {error?.field === "name" && (
+        <p className="alert form-error">{error.message}</p>
+      )}
       </div>
 
       <div>
@@ -30,6 +31,9 @@ function RegistrationForm({
           value={formData.email}
           onChange={onChange}
         />
+        {error?.field === "email" && (
+        <p className="alert form-error">{error.message}</p>
+      )}
       </div>
 
       <div>
@@ -59,6 +63,9 @@ function RegistrationForm({
             </option>
           ))}
         </select>
+      {error?.field === "eventId" && (
+        <p className="alert form-error">{error.message}</p>
+      )}
       </div>
 
       <div>
@@ -71,6 +78,9 @@ function RegistrationForm({
           value={formData.participants}
           onChange={onChange}
         />
+        {error?.field === "participants" && (
+        <p className="alert form-error">{error.message}</p>
+      )}
       </div>
 
       <button type="submit">Anmelden</button>

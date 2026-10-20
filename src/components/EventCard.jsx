@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 function EventCard({
@@ -20,6 +21,20 @@ function EventCard({
       (registration) =>
         registration.eventId === id
     );
+
+  // Anzahl der gebuchten Teilnehmer berechnen
+  const bookedParticipants = eventRegistrations.reduce(
+    (total, registration) =>
+      total + Number(registration.participants),
+    0
+  );
+
+  // Verfügbare Plätze berechnen
+  const availableSeats = Math.max(
+    0,
+    seats - bookedParticipants
+  );
+  
 
   return (
     <article className="event-card">
@@ -70,8 +85,8 @@ function EventCard({
             : (<p>Anmeldungen: {eventRegistrations.length}</p>)}
 
           <p>
-            {seats > 0
-              ? `Noch ${seats} Plätze verfügbar`
+            {availableSeats > 0
+              ? `Noch ${availableSeats} Plätze verfügbar`
               : "Ausgebucht"}
           </p>
         </div>
@@ -81,7 +96,11 @@ function EventCard({
         <p>Anmeldung geschlossen</p>
       )}
 
-      <button disabled={seats === 0 || !registrationOpen}>
+      <button
+        disabled={
+          availableSeats === 0 || !registrationOpen
+        }
+      >
         zur Anmeldung
       </button>
 
